@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
-import { notFound,errorHandler } from "./middleware/errorMiddleware.js";
+import chatRoutes from "./routes/chatRoutes.js"
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
 dotenv.config();
@@ -17,12 +18,14 @@ app.get("/", (req, res) => {
 });
 
 // User Routes
-app.use('/api/user',userRoutes)
+app.use("/api/user", userRoutes);
 
+// Chat routes
+app.use("/api/chat", chatRoutes);
 
 // Error handling
-app.use(notFound)
-app.use(errorHandler)
+app.use(notFound);
+app.use(errorHandler);
 
 // Listen to port
 const PORT = process.env.PORT;

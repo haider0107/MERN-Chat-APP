@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import userModel from "../models/userModel.js";
 import generateToken from "../config/generateToken.js";
 
+// Register User
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
 
@@ -38,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+// Login Users
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -57,4 +59,21 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, authUser };
+// Search Users
+const allUsers = asyncHandler(async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const users = await userModel
+    .find(keyword)
+    .find({ _id: { $ne: req.user._id } });
+  res.status(200).json({ success: "Data send successfully", users });
+});
+
+export { registerUser, authUser,allUsers };
