@@ -71,9 +71,9 @@ const allUsers = asyncHandler(async (req, res) => {
     : {};
 
   const users = await userModel
-    .find(keyword)
+    .find(keyword, "-password -createdAt -updatedAt")
     .find({ _id: { $ne: req.user._id } });
   res.status(200).json({ success: "Data send successfully", users });
 });
 
-export { registerUser, authUser,allUsers };
+export { registerUser, authUser, allUsers };
