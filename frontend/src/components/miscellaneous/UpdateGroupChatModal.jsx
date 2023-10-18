@@ -23,7 +23,7 @@ import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 import axios from "axios";
 import UserListItem from "../UserAvatar/UserListItem";
 
-function UpdateGroupChatModal({ fetchAgain, setFetchAgain }) {
+function UpdateGroupChatModal({ fetchAgain, setFetchAgain, fetchMessages }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
@@ -47,36 +47,37 @@ function UpdateGroupChatModal({ fetchAgain, setFetchAgain }) {
     }
 
     try {
-        setLoading(true);
-        const config = {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        };
-        const { data } = await axios.put(
-          `/api/chat/groupremove`,
-          {
-            chatId: selectedChat._id,
-            userId: user1._id,
-          },
-          config
-        );
-  
-        user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
-        setFetchAgain(!fetchAgain);
-        setLoading(false);
-      } catch (error) {
-        toast({
-          title: "Error Occured!",
-          description: error.response.data.message,
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-          position: "bottom",
-        });
-        setLoading(false);
-      }
-      setGroupChatName("");
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/chat/groupremove`,
+        {
+          chatId: selectedChat._id,
+          userId: user1._id,
+        },
+        config
+      );
+
+      user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+      setFetchAgain(!fetchAgain);
+      fetchMessages()
+      setLoading(false);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+    }
+    setGroupChatName("");
   };
 
   const handleAddUser = async (user1) => {

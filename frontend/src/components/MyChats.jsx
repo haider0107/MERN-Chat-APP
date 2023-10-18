@@ -7,15 +7,21 @@ import { getSender } from "../config/ChatLogics";
 import { AddIcon } from "@chakra-ui/icons";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
 
-function MyChats({fetchAgain}) {
+function MyChats({ fetchAgain, setFetchAgain }) {
   const [loggedUser, setLoggedUser] = useState();
+
+  const [retryCount, setRetryCount] = useState(0);
 
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
   const toast = useToast();
 
+  // if (user == {}) {
+  //   setFetchAgain(true);
+  // }
+
   const fetchChats = async () => {
-    console.log(user._id);
+    console.log(user, "My Chat 34t236482");
     try {
       const config = {
         headers: {
@@ -27,14 +33,19 @@ function MyChats({fetchAgain}) {
       console.log(data);
       setChats(data);
     } catch (error) {
-      toast({
-        title: "Error Occured!",
-        description: "Failed to Load the chats",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom-left",
-      });
+      if (retryCount <= 4) {
+        setFetchAgain(!fetchAgain);
+        setRetryCount(retryCount + 1);
+      } else {
+        toast({
+          title: "Error Occured!",
+          description: "Failed to Load the chats",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom-left",
+        });
+      }
     }
   };
 

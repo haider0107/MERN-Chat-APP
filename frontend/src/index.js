@@ -9,11 +9,20 @@ import ChatProvider from "./Context/ChatProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ChatProvider>
-    <BrowserRouter>
+  <BrowserRouter>
+    <ChatProvider>
       <ChakraProvider>
         <App />
       </ChakraProvider>
-    </BrowserRouter>
-  </ChatProvider>
+    </ChatProvider>
+  </BrowserRouter>
 );
+
+/*
+  "email":"test@test01.com",
+    "password":"123456"
+
+  "email":"haider@code.com",
+    "password":"123456"
+  
+*/
