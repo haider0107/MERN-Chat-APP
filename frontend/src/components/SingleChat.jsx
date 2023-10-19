@@ -29,8 +29,8 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [socketConnected, setSocketConnected] = useState(false);
   const toast = useToast();
 
-
-  const { selectedChat, setSelectedChat, user } = ChatState();
+  const { selectedChat, setSelectedChat, user, notification, setNotification } =
+    ChatState();
 
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -123,12 +123,18 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecived.chat._id
       ) {
-        // give notification
+        if (!notification.includes(newMessageRecived)) {
+          console.log(newMessageRecived);
+          setNotification([newMessageRecived, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
       } else {
         setMessages([...messages, newMessageRecived]);
       }
     });
   });
+
+  console.log(notification);
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -218,7 +224,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
             >
               {istyping ? (
                 <div className="font-medium text-lg px-4 py-2 rounded-lg bg-green-300 inline ">
-                 Typing...
+                  Typing...
                 </div>
               ) : (
                 <></>
