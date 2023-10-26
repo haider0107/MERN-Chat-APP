@@ -1,4 +1,4 @@
-# MERN chat app
+# Chit-Chat
 
 Developed a real-time chat application using the MERN stack and socket.io, enabling seamless and instant communication between users.
 
