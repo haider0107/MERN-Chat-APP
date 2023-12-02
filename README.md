@@ -2,6 +2,10 @@
 
 Developed a real-time chat application using the MERN stack and socket.io, enabling seamless and instant communication between users.
 
+
+https://github.com/haider0107/MERN-Chat-APP/assets/54571451/8915edb8-8c69-401f-b9b5-361565fe2b62
+
+
 # Tech Stack
 
 **Client:** React JS
